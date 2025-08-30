@@ -1,36 +1,76 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Expenses Frontend
 
-## Getting Started
+Frontend da aplicação **Expenses**, desenvolvido com **Next.js** e **TypeScript**.  
+O projeto é responsável pela interface do usuário, incluindo login, dashboard, cadastro de despesas e visualização de gráficos.
 
-First, run the development server:
+---
+
+## 🛠 Tecnologias
+
+- [Next.js](https://nextjs.org/)
+- [React](https://reactjs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Yarn](https://yarnpkg.com/)
+- [ Fetch API](https://axios-http.com/) (para consumir a API do backend)
+
+---
+
+## ⚡ Pré-requisitos
+
+Antes de começar, você precisa ter instalado:
+
+- Node.js >= 18
+- Yarn >= 1.22
+- Backend da aplicação rodando (por padrão em `http://localhost:8080`)
+
+---
+
+## 🚀 Instalação
+
+1. Clone o repositório:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+git clone https://github.com/NicollasMelo/expenses-front.git
+cd expenses-front/expenses
+``` 
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+--- 
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+🔥 Scripts úteis
+Comando	Descrição
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Comando           | Descrição |
+|-------------------|-----------|
+| `yarn run dev`    | Inicia a aplicação em modo de desenvolvimento (`http://localhost:3000`) |
+| `yarn run build`  | Cria a versão de produção do projeto |
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+📝 Estrutura de Pastas
+expenses/
+├─ app/                # Páginas e componentes do Next.js
+├─ public/             # Arquivos públicos (imagens, favicon)
+├─ services/           # Funções de integração com o backend (login, despesas, etc.)
+├─ styles/             # Estilos globais (Tailwind + CSS customizado)
+├─ .gitignore
+├─ package.json
+├─ tsconfig.json
+└─ README.md
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 💻 Funcionalidades
 
-## Deploy on Vercel
+- Login e Logout de usuários
+- Cadastro de usuários
+- Visualização de dashboard de despesas
+- Gráficos de receitas e despesas por categoria
+- Registro de novas despesas
+- Filtros e ordenação de despesas
+- Feedback de erros e carregamento
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📝 Licença
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT License © Nicollas Melo
+
