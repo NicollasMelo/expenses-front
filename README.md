@@ -47,12 +47,13 @@ Comando	Descrição
 
 ---
 
-📝 Estrutura de Pastas
+## 📝 Estrutura de Pastas
+
 expenses/
-├─ app/                # Páginas e componentes do Next.js
-├─ public/             # Arquivos públicos (imagens, favicon)
-├─ services/           # Funções de integração com o backend (login, despesas, etc.)
-├─ styles/             # Estilos globais (Tailwind + CSS customizado)
+├─ app/           # Páginas e componentes do Next.js
+├─ public/        # Arquivos públicos (imagens, favicon)
+├─ services/      # Funções de integração com o backend (login, despesas, etc.)
+├─ styles/        # Estilos globais (Tailwind + CSS customizado)
 ├─ .gitignore
 ├─ package.json
 ├─ tsconfig.json
