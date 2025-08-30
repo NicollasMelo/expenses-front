@@ -50,6 +50,7 @@ Comando	Descrição
 ## 📝 Estrutura de Pastas
 
 expenses/
+
 ├─ app/           # Páginas e componentes do Next.js
 
 ├─ public/        # Arquivos públicos (imagens, favicon)
