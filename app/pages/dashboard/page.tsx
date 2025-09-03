@@ -1,4 +1,4 @@
-import ExpensesDashboard from "../../components/expenses-dashboard/expenses-dashboard";
+import ExpensesDashboard from "../../components/expenses-dashboard/ExpensesDashboard";
 
 export default function DashboardPage() {
   return (

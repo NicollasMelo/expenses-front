@@ -1,10 +1,4 @@
-export interface Expense {
-  id: number | null | undefined;
-  description: string;
-  amount: number;
-  date: string;
-  category: string;
-}
+import { Expense } from "../types/expense";
 export async function deleteExpense(expense: Expense): Promise<void> {
   const token = localStorage.getItem("token");
   if (!token) throw new Error("User not authenticated");
