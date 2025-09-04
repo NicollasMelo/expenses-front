@@ -1,10 +1,4 @@
-export interface Expense {
-  id: number | null | undefined;
-  description: string;
-  amount: number;
-  date: string;
-  category: string;
-}
+import { Expense } from "../types/expense";
 export async function deleteExpense(expense: Expense): Promise<void> {
   const token = localStorage.getItem("token");
   if (!token) throw new Error("User not authenticated");
@@ -21,7 +15,7 @@ export async function deleteExpense(expense: Expense): Promise<void> {
 
   if (!response.ok) {
     const text = await response.text();
-    console.error("Backend error:", text);
-    throw new Error("Failed to delete expense");
+    console.error("Erro no backend", text);
+    throw new Error("Falha ao deletar despesa");
   }
 }

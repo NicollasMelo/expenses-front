@@ -1,10 +1,5 @@
-export interface Expense {
-  id: number | null | undefined;
-  description: string;
-  amount: number;
-  date: string;
-  category: string;
-}
+import { Expense } from "../types/expense";
+
 export async function getExpenses(): Promise<Expense[]> {
   try {
     const token = localStorage.getItem("token");

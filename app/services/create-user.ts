@@ -22,7 +22,7 @@ export async function register(
   });
 
   if (!res.ok) {
-    throw new Error("Create user failed");
+    throw new Error("Cadastro falhou");
   }
 
   return res.json();

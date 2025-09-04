@@ -1,10 +1,4 @@
-export interface Expense {
-  id: number | null | undefined;
-  description: string;
-  amount: number;
-  date: string;
-  category: string;
-}
+import { Expense } from "../types/expense";
 export async function updateExpense(expense: Expense): Promise<Expense> {
   const token = localStorage.getItem("token");
   if (!token) throw new Error("User not authenticated");
@@ -27,8 +21,8 @@ export async function updateExpense(expense: Expense): Promise<Expense> {
 
   if (!response.ok) {
     const text = await response.text();
-    console.error("Backend error:", text);
-    throw new Error("Failed to update expense");
+    console.error("Erro no backend", text);
+    throw new Error("Falha ao atualizar despesa");
   }
 
   return response.json();
