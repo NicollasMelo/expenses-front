@@ -1,4 +1,5 @@
-import { Expense } from "../../types/expense";
+import { Expense } from "@/app/types/expense";
+import ExpenseChartsProps from "@/app/types/ExpenseChartsProps";
 import {
   PieChart,
   Pie,
@@ -13,30 +14,39 @@ import {
   Legend,
 } from "recharts";
 
-interface ExpenseChartsProps {
-  expenses: Expense[];
-}
-
 export default function ExpenseCharts({ expenses }: ExpenseChartsProps) {
-  const categories = Object.values(
-    expenses.reduce((acc, expense) => {
-      if (!acc[expense.category])
-        acc[expense.category] = { name: expense.category, value: 0 };
-      acc[expense.category].value += expense.amount;
-      return acc;
-    }, {} as Record<string, { name: string; value: number }>)
-  );
+  const groupByCategory = (expenses: Expense[]) => {
+    const map = new Map<string, { name: string; value: number }>();
 
-  const expensesOverTime = Object.values(
-    expenses.reduce((acc, expense) => {
+    expenses.forEach((expense) => {
+      if (!map.has(expense.category)) {
+        map.set(expense.category, { name: expense.category, value: 0 });
+      }
+      map.get(expense.category)!.value += expense.amount;
+    });
+
+    return Array.from(map.values());
+  };
+
+  const groupByMonth = (expenses: Expense[]) => {
+    const map = new Map<string, { date: string; value: number }>();
+
+    expenses.forEach((expense) => {
       const month = new Date(expense.date).toLocaleDateString("en", {
         month: "short",
       });
-      if (!acc[month]) acc[month] = { date: month, value: 0 };
-      acc[month].value += expense.amount;
-      return acc;
-    }, {} as Record<string, { date: string; value: number }>)
-  );
+
+      if (!map.has(month)) {
+        map.set(month, { date: month, value: 0 });
+      }
+      map.get(month)!.value += expense.amount;
+    });
+
+    return Array.from(map.values());
+  };
+
+  const categories = groupByCategory(expenses);
+  const expensesOverTime = groupByMonth(expenses);
 
   const colors = [
     "#156b34ff",

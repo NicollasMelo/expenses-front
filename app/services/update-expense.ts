@@ -21,8 +21,8 @@ export async function updateExpense(expense: Expense): Promise<Expense> {
 
   if (!response.ok) {
     const text = await response.text();
-    console.error("Backend error:", text);
-    throw new Error("Failed to update expense");
+    console.error("Erro no backend", text);
+    throw new Error("Falha ao atualizar despesa");
   }
 
   return response.json();

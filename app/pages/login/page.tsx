@@ -1,10 +1,10 @@
 "use client";
-import LoginPage from "./pages/login/page";
+import Login from "@/app/components/login/Login";
 
-export default function Home() {
+export default function LoginPage() {
   return (
     <main className="min-h-screen flex items-center justify-center bg-[#121212]">
-      <LoginPage />
+      <Login />
     </main>
   );
 }

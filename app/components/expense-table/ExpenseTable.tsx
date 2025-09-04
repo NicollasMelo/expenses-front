@@ -1,11 +1,5 @@
 import { FaEdit, FaTrash } from "react-icons/fa";
-import { Expense } from "../../types/expense";
-
-interface ExpenseTableProps {
-  expenses: Expense[];
-  onEdit: (expense: Expense) => void;
-  onDelete: (expense: Expense) => void;
-}
+import ExpenseTableProps from "@/app/types/ExpenseTableProps";
 
 export default function ExpenseTable({
   expenses,

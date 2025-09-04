@@ -1,11 +1,11 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import { Expense } from "@/app/types/expense";
 import { createExpense } from "@/app/services/create-expense";
 import { deleteExpense } from "@/app/services/delete-expense";
 import { getExpenses } from "@/app/services/get-expense";
 import { updateExpense } from "@/app/services/update-expense";
+import { updateSalary } from "../../services/update-salary";
 
 import ExpenseSummary from "../expense-summary/ExpenseSummary";
 import ExpenseTable from "../expense-table/ExpenseTable";
@@ -14,14 +14,14 @@ import ExpenseCharts from "../expense-charts/ExpenseCharts";
 import { DeleteModal } from "../delete-expense-modal/DeleteExpense";
 
 import { useUser } from "../../hooks/useUser";
-import { Salary } from "../../services/salary";
+import { UserData } from "@/app/types/userData";
 
 export default function DashboardPage() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [loading, setLoading] = useState(true);
   const [salary, setSalary] = useState(0);
 
-  const user = useUser();
+  const { user } = useUser();
 
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -29,47 +29,41 @@ export default function DashboardPage() {
   const [selectedExpense, setSelectedExpense] = useState<Expense | null>(null);
 
   useEffect(() => {
-    async function loadExpenses() {
-      if (!user) return;
+    async function loadData() {
       try {
         const data = await getExpenses();
         setExpenses(data);
-        setSalary(user.salary || 0);
+
+        const token = localStorage.getItem("token");
+        if (!token) throw new Error("Usuário não autenticado");
+
+        const response = await fetch("http://localhost:8080/users/me", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          const text = await response.text();
+          console.error("Erro ao buscar usuário:", text);
+          throw new Error("Falha ao carregar usuário");
+        }
+
+        const userData: UserData = await response.json();
+        setSalary(userData.salary ?? 0);
       } catch (error) {
-        console.error("Erro ao buscar gastos:", error);
+        console.error("Erro ao carregar dados:", error);
       } finally {
         setLoading(false);
       }
     }
-    loadExpenses();
-  }, [user]);
 
-  const totalAmount = expenses.reduce(
-    (sum, expense) => sum + expense.amount,
-    0
-  );
+    loadData();
+  }, []);
 
-  const handleEdit = (expense: Expense) => {
-    setSelectedExpense(expense);
-    setEditModalOpen(true);
-  };
-
-  const handleDelete = (expense: Expense) => {
-    setSelectedExpense(expense);
-    setDeleteModalOpen(true);
-  };
-
-  const handleDeleteConfirm = async () => {
-    if (!selectedExpense) return;
-    try {
-      await deleteExpense(selectedExpense);
-      setExpenses((prev) => prev.filter((e) => e.id !== selectedExpense.id));
-      setDeleteModalOpen(false);
-      setSelectedExpense(null);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const totalAmount = expenses.reduce((sum, e) => sum + e.amount, 0);
 
   const handleCreateSave = async (data: {
     description: string;
@@ -105,6 +99,28 @@ export default function DashboardPage() {
     }
   };
 
+  const handleDeleteConfirm = async () => {
+    if (!selectedExpense) return;
+    try {
+      await deleteExpense(selectedExpense);
+      setExpenses((prev) => prev.filter((e) => e.id !== selectedExpense.id));
+      setDeleteModalOpen(false);
+      setSelectedExpense(null);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleUpdateSalary = async (newSalary: number) => {
+    if (!user) return;
+    try {
+      const updatedUser = await updateSalary(user.id, newSalary);
+      setSalary(updatedUser.salary ?? 0);
+    } catch (error) {
+      console.error("Erro ao atualizar salário:", error);
+    }
+  };
+
   if (loading || !user)
     return <p className="text-gray-400 text-center mt-10">Carregando...</p>;
 
@@ -122,14 +138,19 @@ export default function DashboardPage() {
       <ExpenseSummary
         totalAmount={totalAmount}
         salary={salary}
-        onUpdateSalary={(newSalary) =>
-          user && Salary(user.id, newSalary, setSalary)
-        }
+        onUpdateSalary={handleUpdateSalary}
       />
+
       <ExpenseTable
         expenses={expenses}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
+        onEdit={(e) => {
+          setSelectedExpense(e);
+          setEditModalOpen(true);
+        }}
+        onDelete={(e) => {
+          setSelectedExpense(e);
+          setDeleteModalOpen(true);
+        }}
       />
 
       <ExpenseModal

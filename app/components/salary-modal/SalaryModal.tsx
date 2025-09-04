@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface SalaryModalProps {
   isOpen: boolean;
@@ -15,11 +15,14 @@ export default function SalaryModal({
 }: SalaryModalProps) {
   const [value, setValue] = useState<number>(currentSalary);
 
+  useEffect(() => {
+    setValue(currentSalary);
+  }, [currentSalary, isOpen]);
+
   if (!isOpen) return null;
 
   const handleSubmit = () => {
     onSave(value);
-    onClose();
   };
 
   return (
@@ -32,7 +35,7 @@ export default function SalaryModal({
           type="number"
           value={value}
           onChange={(e) => setValue(Number(e.target.value))}
-          className="w-full p-2 rounded-md text-black"
+          className="w-full p-2 rounded-md text-[#e5e7eb]"
         />
         <div className="flex justify-end gap-2 mt-4">
           <button

@@ -1,11 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SalaryModal from "../salary-modal/SalaryModal";
-
-interface ExpenseSummaryProps {
-  totalAmount: number;
-  salary: number;
-  onUpdateSalary: (newSalary: number) => void; // callback do pai
-}
+import { FaEdit } from "react-icons/fa";
 
 export default function ExpenseSummary({
   totalAmount,
@@ -15,30 +10,38 @@ export default function ExpenseSummary({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentSalary, setCurrentSalary] = useState(salary);
 
+  useEffect(() => {
+    setCurrentSalary(salary);
+  }, [salary]);
+
   const remaining = currentSalary - totalAmount;
 
   const handleSave = (newSalary: number) => {
-    setCurrentSalary(newSalary); // atualiza o estado local do front
-    onUpdateSalary(newSalary); // chama o pai para atualizar no backend
-    setIsModalOpen(false); // fecha modal
+    onUpdateSalary(newSalary);
+    setIsModalOpen(false);
   };
 
   return (
     <div className="space-y-4">
-      <div
-        className="bg-[#1e1e1e] rounded-xl shadow-md p-6 border border-gray-700 text-center cursor-pointer"
-        onClick={() => setIsModalOpen(true)}
-      >
+      <div className="bg-[#1e1e1e] rounded-xl shadow-md p-6 border border-gray-700 text-center ">
         <h2 className="text-xl font-bold text-[#e5e7eb] mb-4">
           Resumo Financeiro
         </h2>
         <div className="grid grid-cols-2 gap-6">
           <div>
             <p className="text-lg text-gray-400">Salário</p>
-            <p className="text-2xl font-extrabold text-blue-400 mt-1">
-              R$: {currentSalary.toFixed(2)}
-            </p>
+            <div className="inline-flex items-center gap-2 mt-1">
+              <span className="text-2xl font-extrabold text-blue-400">
+                R$: {currentSalary.toFixed(2)}
+              </span>
+              <FaEdit
+                className="text-blue-400 cursor-pointer"
+                onClick={() => setIsModalOpen(true)}
+                title="Editar salário"
+              />
+            </div>
           </div>
+
           <div>
             <p className="text-lg text-gray-400">Gastos Totais</p>
             <p className="text-2xl font-extrabold text-red-400 mt-1">
@@ -62,7 +65,7 @@ export default function ExpenseSummary({
       <SalaryModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        onSave={handleSave} // aqui chamamos handleSave
+        onSave={handleSave}
         currentSalary={currentSalary}
       />
     </div>

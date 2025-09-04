@@ -1,11 +1,4 @@
-import { Expense } from "@/app/types/expense";
-
-interface DeleteModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onConfirm: () => void;
-  expense: Expense;
-}
+import { DeleteModalProps } from "@/app/types/DeleteModalProps";
 
 export function DeleteModal({
   isOpen,

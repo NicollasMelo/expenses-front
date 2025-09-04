@@ -1,34 +1,20 @@
-// hooks/useUser.ts
-import { useEffect, useState } from "react";
-import { jwtDecode } from "jwt-decode";
-
-interface User {
-  id: number;
-  fullName?: string;
-  email?: string;
-  salary?: number;
-}
+import { useState, useEffect } from "react";
+import { UserData } from "@/app/types/userData";
 
 export function useUser() {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<UserData | null>(null);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) return;
-
-    try {
-      const decoded: any = jwtDecode(token);
-
-      setUser({
-        id: decoded.id,
-        fullName: decoded.fullName,
-        email: decoded.email,
-        salary: decoded.salary || 0,
+    async function loadUser() {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+      const res = await fetch("http://localhost:8080/users/me", {
+        headers: { Authorization: `Bearer ${token}` },
       });
-    } catch (error) {
-      console.error("Erro ao decodificar token:", error);
+      if (res.ok) setUser(await res.json());
     }
+    loadUser();
   }, []);
 
-  return user;
+  return { user };
 }

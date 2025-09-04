@@ -16,7 +16,7 @@ export async function createExpense(expense: Expense): Promise<Expense> {
   if (!response.ok) {
     const text = await response.text();
     console.error("Backend error:", text);
-    throw new Error("Failed to create expense");
+    throw new Error("Falha ao criar despesa");
   }
 
   const data: Expense = await response.json();

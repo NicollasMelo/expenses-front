@@ -15,7 +15,7 @@ export async function deleteExpense(expense: Expense): Promise<void> {
 
   if (!response.ok) {
     const text = await response.text();
-    console.error("Backend error:", text);
-    throw new Error("Failed to delete expense");
+    console.error("Erro no backend", text);
+    throw new Error("Falha ao deletar despesa");
   }
 }

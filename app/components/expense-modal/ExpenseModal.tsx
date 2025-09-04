@@ -1,17 +1,5 @@
 import { useState, useEffect } from "react";
-import { Expense } from "../../types/expense";
-
-interface ExpenseModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onSave: (expense: {
-    description: string;
-    category: string;
-    amount: number;
-    date: string;
-  }) => void;
-  expense?: Expense;
-}
+import ExpenseModalProps from "@/app/types/ExpenseModalProps";
 
 export default function ExpenseModal({
   isOpen,

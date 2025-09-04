@@ -22,7 +22,7 @@ export async function login(
   });
 
   if (!res.ok) {
-    throw new Error("Login failed");
+    throw new Error("Falha ao fazer login");
   }
 
   return res.json();
