@@ -18,7 +18,6 @@ export async function createExpense(expense: Expense): Promise<Expense> {
     console.error("Backend error:", text);
     throw new Error("Falha ao criar despesa");
   }
-
   const data: Expense = await response.json();
   return data;
 }

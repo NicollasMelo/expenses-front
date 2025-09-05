@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface SalaryModalProps {
   isOpen: boolean;
@@ -13,40 +13,51 @@ export default function SalaryModal({
   onSave,
   currentSalary,
 }: SalaryModalProps) {
-  const [value, setValue] = useState<number>(currentSalary);
+  const [salary, setSalary] = useState(currentSalary);
 
   useEffect(() => {
-    setValue(currentSalary);
-  }, [currentSalary, isOpen]);
+    setSalary(currentSalary);
+  }, [currentSalary]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!isOpen) return;
+
+      if (e.key === "Escape") {
+        onClose();
+      } else if (e.key === "Enter") {
+        onSave(salary);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, salary, onClose, onSave]);
 
   if (!isOpen) return null;
 
-  const handleSubmit = () => {
-    onSave(value);
-  };
-
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-[#1e1e1e] rounded-xl shadow-md p-6 border border-gray-700 w-80">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+      <div className="bg-[#1e1e1e] p-6 rounded-xl w-80 border border-gray-700">
         <h2 className="text-xl font-bold text-[#e5e7eb] mb-4">
-          Adicionar/Atualizar Salário
+          Editar Salário
         </h2>
         <input
           type="number"
-          value={value}
-          onChange={(e) => setValue(Number(e.target.value))}
-          className="w-full p-2 rounded-md text-[#e5e7eb]"
+          value={salary}
+          onChange={(e) => setSalary(parseFloat(e.target.value))}
+          className="w-full p-2 rounded border border-gray-600 bg-[#2a2a2a] text-[#e5e7eb]"
         />
-        <div className="flex justify-end gap-2 mt-4">
+        <div className="mt-4 flex justify-end gap-2">
           <button
+            className="cursor-pointer px-4 py-2 rounded bg-gray-700 text-[#e5e7eb] hover:bg-gray-600"
             onClick={onClose}
-            className="px-4 py-2 rounded-md border border-gray-500 text-gray-300"
           >
             Cancelar
           </button>
           <button
-            onClick={handleSubmit}
-            className="px-4 py-2 rounded-md bg-blue-500 text-white"
+            className="cursor-pointer px-4 py-2 rounded bg-blue-500 text-white hover:bg-blue-600"
+            onClick={() => onSave(salary)}
           >
             Salvar
           </button>

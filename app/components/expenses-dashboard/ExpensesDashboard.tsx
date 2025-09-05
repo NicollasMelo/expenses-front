@@ -19,7 +19,7 @@ import { UserData } from "@/app/types/userData";
 export default function DashboardPage() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [loading, setLoading] = useState(true);
-  const [salary, setSalary] = useState(0);
+  const [salary, setSalary] = useState<number | null>(null);
 
   const { user } = useUser();
 
@@ -52,7 +52,7 @@ export default function DashboardPage() {
         }
 
         const userData: UserData = await response.json();
-        setSalary(userData.salary ?? 0);
+        setSalary(userData.salary ?? null);
       } catch (error) {
         console.error("Erro ao carregar dados:", error);
       } finally {
@@ -115,7 +115,7 @@ export default function DashboardPage() {
     if (!user) return;
     try {
       const updatedUser = await updateSalary(user.id, newSalary);
-      setSalary(updatedUser.salary ?? 0);
+      setSalary(updatedUser.salary ?? null);
     } catch (error) {
       console.error("Erro ao atualizar salário:", error);
     }

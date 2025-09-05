@@ -10,19 +10,16 @@ export default function ExpenseModal({
   const [description, setDescription] = useState(expense?.description || "");
   const [category, setCategory] = useState(expense?.category || "");
   const [amount, setAmount] = useState(expense ? String(expense.amount) : "");
-  const formatDateForInput = (dateString: string) => {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
-  };
-
   const [date, setDate] = useState(
-    expense
-      ? formatDateForInput(expense.date)
-      : new Date().toISOString().substring(0, 10)
+    expense?.date || new Date().toISOString().substring(0, 10)
   );
+
+  useEffect(() => {
+    setDescription(expense?.description || "");
+    setCategory(expense?.category || "");
+    setAmount(expense ? String(expense.amount) : "");
+    setDate(expense?.date || "");
+  }, [expense]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -32,20 +29,26 @@ export default function ExpenseModal({
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, description, category, amount]);
+  }, [isOpen, description, category, amount, date]);
 
   const handleSave = () => {
-    const amountNumber = Number(amount);
-    if (!description || !category || amountNumber <= 0) return;
+    const amountNumber = Number(amount.replace(",", "."));
+    if (!description || !category || amountNumber <= 0) {
+      alert("Preencha todos os campos corretamente!");
+      return;
+    }
+    if (!date || date.trim() === "") {
+      alert("Preencha a data!");
+      return;
+    }
 
     onSave({
       description,
       category,
       amount: amountNumber,
-      date,
+      date: date.trim(),
     });
   };
-
   if (!isOpen) return null;
 
   return (

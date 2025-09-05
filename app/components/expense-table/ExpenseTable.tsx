@@ -30,7 +30,7 @@ export default function ExpenseTable({
                 R$: {expense.amount.toFixed(2)}
               </td>
               <td className="py-2 px-4">
-                {new Date(expense.date).toLocaleDateString()}
+                {new Date(expense.date + "T00:00").toLocaleDateString()}
               </td>
               <td className="py-2 px-4 flex gap-2">
                 <button
