@@ -32,7 +32,7 @@ export default function ExpenseSummary({
             <p className="text-lg text-gray-400">Salário</p>
             <div className="inline-flex items-center gap-2 mt-1">
               <span className="text-2xl font-extrabold text-blue-400">
-                R$: {currentSalary.toFixed(2)}
+                R$: {currentSalary?.toFixed(2) || "0.00"}
               </span>
               <FaEdit
                 className="text-blue-400 cursor-pointer"

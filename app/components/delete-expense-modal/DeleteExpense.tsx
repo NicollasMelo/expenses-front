@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { DeleteModalProps } from "@/app/types/DeleteModalProps";
 
 export function DeleteModal({
@@ -6,6 +7,16 @@ export function DeleteModal({
   onConfirm,
   expense,
 }: DeleteModalProps) {
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!isOpen) return;
+      if (e.key === "Escape") onClose();
+      if (e.key === "Enter") onConfirm();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onClose, onConfirm]);
+
   if (!isOpen) return null;
 
   return (

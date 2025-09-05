@@ -1,5 +1,5 @@
 interface ExpenseSummaryProps {
   totalAmount: number;
-  salary: number;
+  salary: any;
   onUpdateSalary: (newSalary: number) => void;
 }

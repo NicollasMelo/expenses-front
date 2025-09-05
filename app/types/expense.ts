@@ -1,3 +1,5 @@
+import { UserData } from "./userData";
+
 export interface Expense {
   id?: number | null;
   description: string;
